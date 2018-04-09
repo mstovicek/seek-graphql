@@ -50,13 +50,23 @@ package:
  include:
    - ./bin/sls-api-gateway
 
+custom:
+  vars:
+    corsAllowOrigin: "www.example.com"
+    corsAllowMethods: "OPTIONS,POST"
+
 functions:
   seek-graphql:
     handler: bin/sls-api-gateway
+    environment:
+      CORS_ALLOW_ORIGIN: ${self:custom.vars.corsAllowOrigin}
+      CORS_ALLOW_METHODS: ${self:custom.vars.corsAllowMethods}
     events:
       - http:
           path: seek-graphql
           method: post
+          cors:
+            origin: ${self:custom.vars.corsAllowOrigin}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

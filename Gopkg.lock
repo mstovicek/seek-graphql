@@ -13,6 +13,12 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/caarlos0/env"
+  packages = ["."]
+  revision = "7cd7992b3bc86f920394f8de92c13900da1a46b7"
+  version = "v3.2.0"
+
+[[projects]]
   branch = "master"
   name = "github.com/graph-gophers/graphql-go"
   packages = [
@@ -51,6 +57,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "8dfea8212dd21173da37ba59f58c0c8b4fca39385296d6ef793d8b5d4dc16661"
+  inputs-digest = "c29c29f5de909892c00bca0589f6eef451b062fb251cbf3b5b500ec4e6e83846"
   solver-name = "gps-cdcl"
   solver-version = 1
