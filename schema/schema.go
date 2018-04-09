@@ -7,20 +7,72 @@ import (
 	"context"
 )
 
-func Execute(query string) (*graphql.Response, error) {
-	sch, _ := getSchema("./schema/schema.graphql")
+func Execute(ctx context.Context, query string) (*graphql.Response, error) {
+	//sch, _ := getSchemaFromFile("./schema/schema.graphql")
+	sch := getSchema()
 	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
-
-	ctx := context.Background()
 
 	return s.Exec(ctx, query, "", make(map[string]interface{})), nil
 }
 
-func getSchema(path string) (string, error) {
+func getSchemaFromFile(path string) (string, error) {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return "", err
 	}
 
 	return string(b), nil
+}
+
+func getSchema() string {
+	return `
+schema {
+    query: Query
+}
+
+type Query {
+    category(id: String!): Category
+    categories(first: Int,  after: String): CategoriesConnection!
+    card(id: String!): Card
+}
+
+type PageInfo {
+    startCursor: ID
+    endCursor: ID
+    hasNextPage: Boolean!
+}
+
+type Category {
+    id: ID!
+    title: String
+    cards(first: Int, after: String): CardsConnection
+}
+
+type CategoriesEdge {
+    cursor: ID!
+    node: Category
+}
+
+type CategoriesConnection {
+    totalCount: Int!
+    edges: [CategoriesEdge]
+    pageInfo: PageInfo!
+}
+
+type Card {
+    id: ID!
+    title: String
+}
+
+type CardsEdge {
+    cursor: ID!
+    node: Card
+}
+
+type CardsConnection {
+    totalCount: Int!
+    edges: [CardsEdge]
+    pageInfo: PageInfo!
+}
+`
 }

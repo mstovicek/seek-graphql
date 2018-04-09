@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/mstovicek/seek-2/schema"
+	"context"
 )
 
 func main() {
@@ -60,7 +61,7 @@ func main() {
 	//}
 	//`
 
-	response, _ := schema.Execute(query)
+	response, _ := schema.Execute(context.Background(), query)
 
 	rJSON, _ := json.MarshalIndent(response, "", "\t")
 	fmt.Printf("%s \n", query)
