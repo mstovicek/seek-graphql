@@ -1,0 +1,48 @@
+schema {
+    query: Query
+}
+
+type Query {
+    category(id: String!): Category
+    categories(first: Int,  after: String): CategoriesConnection!
+    card(id: String!): Card
+}
+
+type PageInfo {
+    startCursor: ID
+    endCursor: ID
+    hasNextPage: Boolean!
+}
+
+type Category {
+    id: ID!
+    title: String
+    cards(first: Int, after: String): CardsConnection
+}
+
+type CategoriesEdge {
+    cursor: ID!
+    node: Category
+}
+
+type CategoriesConnection {
+    totalCount: Int!
+    edges: [CategoriesEdge]
+    pageInfo: PageInfo!
+}
+
+type Card {
+    id: ID!
+    title: String
+}
+
+type CardsEdge {
+    cursor: ID!
+    node: Card
+}
+
+type CardsConnection {
+    totalCount: Int!
+    edges: [CardsEdge]
+    pageInfo: PageInfo!
+}
