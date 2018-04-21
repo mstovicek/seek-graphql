@@ -21,6 +21,15 @@ func newCardResolverById(ctx context.Context, ID string) (*cardResolver, error) 
 	}, nil
 }
 
+func newCardResolverByInput(ctx context.Context, title string) (*cardResolver, error) {
+	card, _ := loader.InsertCard(ctx, title)
+
+	return &cardResolver{
+		ctx:  ctx,
+		card: card,
+	}, nil
+}
+
 func newCardResolvedWithModel(ctx context.Context, card *model.Card) (*cardResolver, error) {
 	return &cardResolver{
 		ctx:  ctx,

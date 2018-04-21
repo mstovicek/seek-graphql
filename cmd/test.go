@@ -14,29 +14,29 @@ func main() {
 	//}
 	//`
 
-	query := `
-	{
-		category(id: "milan") {
-			id,
-			title,
-			cards (first: 3, after: "cursor:5") {
-				totalCount,
-				edges {
-					cursor,
-					node {
-						id,
-						title
-					}
-				}
-				pageInfo{
-					startCursor,
-					endCursor,
-					hasNextPage
-				},
-			}
-		}
-	}
-`
+//	query := `
+//	{
+//		category(id: "milan") {
+//			id,
+//			title,
+//			cards (first: 3, after: "cursor:5") {
+//				totalCount,
+//				edges {
+//					cursor,
+//					node {
+//						id,
+//						title
+//					}
+//				}
+//				pageInfo{
+//					startCursor,
+//					endCursor,
+//					hasNextPage
+//				},
+//			}
+//		}
+//	}
+//`
 
 	//	query := `
 	//{
@@ -60,6 +60,15 @@ func main() {
 	//	}
 	//}
 	//`
+
+	query := `
+	mutation {
+		addCard(input: {title: "NewCard"}) {
+			id,
+			title
+		}
+	}
+`
 
 	response, _ := schema.Execute(context.Background(), query)
 

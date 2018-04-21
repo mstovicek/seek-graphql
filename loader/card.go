@@ -44,3 +44,10 @@ func CardsTotalCountByCategory(category *model.Category) (*int, error) {
 func CardsHasNextAfter(afterID *string) (bool, error) {
 	return true, nil
 }
+
+func InsertCard(ctx context.Context, title string) (*model.Card, error) {
+	return &model.Card{
+		ID: "42",
+		Title: "newCard:" + title,
+	}, nil
+}

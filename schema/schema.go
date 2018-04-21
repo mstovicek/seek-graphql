@@ -28,6 +28,7 @@ func getSchema() string {
 	return `
 schema {
     query: Query
+	mutation: Mutation
 }
 
 type Query {
@@ -73,6 +74,14 @@ type CardsConnection {
     totalCount: Int!
     edges: [CardsEdge]
     pageInfo: PageInfo!
+}
+
+type Mutation {
+	addCard(input: CardInput!): Card
+}
+
+input CardInput {
+	title: String!
 }
 `
 }
