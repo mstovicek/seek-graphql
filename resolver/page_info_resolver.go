@@ -3,7 +3,7 @@ package resolver
 import (
 	"github.com/graph-gophers/graphql-go"
 	"context"
-	"github.com/mstovicek/seek-2/service"
+	"github.com/mstovicek/seek-graphql/service"
 )
 
 type pageInfoResolver struct {

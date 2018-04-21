@@ -5,7 +5,7 @@ import (
 	"context"
 	"log"
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/mstovicek/seek-2/schema"
+	"github.com/mstovicek/seek-graphql/schema"
 	"encoding/json"
 	"github.com/caarlos0/env"
 )

@@ -1,10 +1,10 @@
 package resolver
 
 import (
-	"github.com/mstovicek/seek-2/model"
-	"github.com/mstovicek/seek-2/service"
+	"github.com/mstovicek/seek-graphql/model"
+	"github.com/mstovicek/seek-graphql/service"
 	"context"
-	"github.com/mstovicek/seek-2/loader"
+	"github.com/mstovicek/seek-graphql/loader"
 )
 
 type categoriesConnectionResolver struct {

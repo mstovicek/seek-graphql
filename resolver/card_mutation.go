@@ -3,7 +3,7 @@ package resolver
 import (
 	"golang.org/x/net/context"
 	"fmt"
-	"github.com/mstovicek/seek-2/model"
+	"github.com/mstovicek/seek-graphql/model"
 )
 
 func (r *Resolver) AddCard(ctx context.Context, args struct {

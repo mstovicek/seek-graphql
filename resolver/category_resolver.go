@@ -2,10 +2,10 @@ package resolver
 
 import (
 	"github.com/graph-gophers/graphql-go"
-	"github.com/mstovicek/seek-2/model"
+	"github.com/mstovicek/seek-graphql/model"
 	"log"
 	"strconv"
-	"github.com/mstovicek/seek-2/loader"
+	"github.com/mstovicek/seek-graphql/loader"
 	"context"
 )
 

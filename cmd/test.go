@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/mstovicek/seek-2/schema"
+	"github.com/mstovicek/seek-graphql/schema"
 	"context"
 )
 

@@ -2,7 +2,7 @@ package loader
 
 import (
 	"context"
-	"github.com/mstovicek/seek-2/model"
+	"github.com/mstovicek/seek-graphql/model"
 	"log"
 	"strconv"
 )

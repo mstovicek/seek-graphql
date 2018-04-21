@@ -2,9 +2,9 @@ package resolver
 
 import (
 	"github.com/graph-gophers/graphql-go"
-	"github.com/mstovicek/seek-2/model"
+	"github.com/mstovicek/seek-graphql/model"
 	"context"
-	"github.com/mstovicek/seek-2/loader"
+	"github.com/mstovicek/seek-graphql/loader"
 )
 
 type cardResolver struct {

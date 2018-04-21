@@ -3,7 +3,7 @@ package schema
 import (
 	"io/ioutil"
 	"github.com/graph-gophers/graphql-go"
-	"github.com/mstovicek/seek-2/resolver"
+	"github.com/mstovicek/seek-graphql/resolver"
 	"context"
 )
 
