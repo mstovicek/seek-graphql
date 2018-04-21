@@ -3,6 +3,10 @@ language: go
 go:
   - "1.10"
 
+branches:
+  only:
+    - master
+
 jobs:
   include:
     - stage: build
