@@ -4,4 +4,4 @@ build: clean
 	env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/test cmd/test.go
 
 clean:
-	rm bin/*
+	rm -f bin/*
