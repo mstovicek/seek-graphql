@@ -1,0 +1,9 @@
+language: go
+
+go:
+  - "1.10"
+
+jobs:
+  include:
+    - stage: build
+      script: make build
