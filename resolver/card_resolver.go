@@ -6,7 +6,7 @@ import (
 	"github.com/mstovicek/seek-graphql/model"
 )
 
-func newCardResolverById(
+func newCardResolverByID(
 	ctx context.Context,
 	reader cardReaderInterface,
 	ID string,

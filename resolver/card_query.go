@@ -9,5 +9,5 @@ func (r *Resolver) Card(ctx context.Context, args struct {
 }) (*cardResolver, error) {
 	cardLoader, _ := getCardReader(ctx)
 
-	return newCardResolverById(ctx, cardLoader, args.ID)
+	return newCardResolverByID(ctx, cardLoader, args.ID)
 }

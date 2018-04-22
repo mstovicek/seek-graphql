@@ -17,8 +17,8 @@ type categoryLoader struct {
 	ctx context.Context
 }
 
-func (loader *categoryLoader) LoadCategoryById(ctx context.Context, ID string) (*model.Category, error) {
-	log.Printf("loader.LoadCategoryById (id: %s) !!\n", ID)
+func (loader *categoryLoader) LoadCategoryByID(ctx context.Context, ID string) (*model.Category, error) {
+	log.Printf("loader.LoadCategoryByID (id: %s) !!\n", ID)
 
 	return &model.Category{
 		ID:    ID,

@@ -10,5 +10,5 @@ func (r *Resolver) Category(ctx context.Context, args struct {
 	categoryReader, _ := getCategoryReader(ctx)
 	cardReader, _ := getCardReader(ctx)
 
-	return newCategoryResolverById(ctx, categoryReader, cardReader, args.ID)
+	return newCategoryResolverByID(ctx, categoryReader, cardReader, args.ID)
 }

@@ -30,7 +30,7 @@ func getCategoryReader(ctx context.Context) (categoryReaderInterface, error) {
 }
 
 type categoryReaderInterface interface {
-	LoadCategoryById(ctx context.Context, ID string) (*model.Category, error)
+	LoadCategoryByID(ctx context.Context, ID string) (*model.Category, error)
 	ListCategories(ctx context.Context, first int, afterID *string) ([]*model.Category, error)
 	CategoriesHasNextAfter(after *string) (bool, error)
 	CategoriesTotalCount() (*int, error)

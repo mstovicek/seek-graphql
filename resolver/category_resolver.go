@@ -8,13 +8,13 @@ import (
 	"strconv"
 )
 
-func newCategoryResolverById(
+func newCategoryResolverByID(
 	ctx context.Context,
 	categoryReader categoryReaderInterface,
 	cardReader cardReaderInterface,
 	ID string,
 ) (*categoryResolver, error) {
-	category, _ := categoryReader.LoadCategoryById(ctx, ID)
+	category, _ := categoryReader.LoadCategoryByID(ctx, ID)
 
 	return newCategoryResolverWithModel(ctx, cardReader, category)
 }
