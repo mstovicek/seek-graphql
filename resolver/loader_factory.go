@@ -2,12 +2,12 @@ package resolver
 
 import (
 	"context"
-	"github.com/mstovicek/seek-graphql/loader_dummy"
+	"github.com/mstovicek/seek-graphql/loaderdummy"
 	"github.com/mstovicek/seek-graphql/model"
 )
 
 func getCardReader(ctx context.Context) (cardReaderInterface, error) {
-	return loader_dummy.NewCardLoader(ctx)
+	return loaderdummy.NewCardLoader(ctx)
 }
 
 type cardReaderInterface interface {
@@ -18,7 +18,7 @@ type cardReaderInterface interface {
 }
 
 func getCardWriter(ctx context.Context) (cardWriterInterface, error) {
-	return loader_dummy.NewCardLoader(ctx)
+	return loaderdummy.NewCardLoader(ctx)
 }
 
 type cardWriterInterface interface {
@@ -26,7 +26,7 @@ type cardWriterInterface interface {
 }
 
 func getCategoryReader(ctx context.Context) (categoryReaderInterface, error) {
-	return loader_dummy.NewCategoryLoader(ctx)
+	return loaderdummy.NewCategoryLoader(ctx)
 }
 
 type categoryReaderInterface interface {

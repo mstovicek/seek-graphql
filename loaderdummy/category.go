@@ -1,4 +1,4 @@
-package loader_dummy
+package loaderdummy
 
 import (
 	"context"
