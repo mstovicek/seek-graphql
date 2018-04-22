@@ -13,7 +13,10 @@ func newCategoriesConnectionResolver(
 	first int,
 	afterCursor *string,
 ) (*categoriesConnectionResolver, error) {
-	afterID, _ := service.DecodeCursor(afterCursor)
+	afterID, err := service.DecodeCursor(afterCursor)
+	if err != nil {
+		return nil, err
+	}
 
 	categories, err := categoryReader.ListCategories(ctx, first, afterID)
 	if err != nil {
@@ -23,8 +26,15 @@ func newCategoriesConnectionResolver(
 	firstID := &(categories[0].ID)
 	lastID := &(categories[len(categories)-1].ID)
 
-	totalCount, _ := categoryReader.CategoriesTotalCount()
-	hasNext, _ := categoryReader.CategoriesHasNextAfter(lastID)
+	totalCount, err := categoryReader.CategoriesTotalCount()
+	if err != nil {
+		return nil, err
+	}
+
+	hasNext, err := categoryReader.CategoriesHasNextAfter(lastID)
+	if err != nil {
+		return nil, err
+	}
 
 	return &categoriesConnectionResolver{
 		ctx:        ctx,

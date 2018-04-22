@@ -14,7 +14,10 @@ func newCardConnectionResolverByCategory(
 	first int,
 	afterCursor *string,
 ) (*cardsConnectionResolver, error) {
-	afterID, _ := service.DecodeCursor(afterCursor)
+	afterID, err := service.DecodeCursor(afterCursor)
+	if err != nil {
+		return nil, err
+	}
 
 	cards, err := reader.ListCardsByCategory(ctx, category, first, afterID)
 	if err != nil {
@@ -24,8 +27,15 @@ func newCardConnectionResolverByCategory(
 	firstID := &(cards[0].ID)
 	lastID := &(cards[len(cards)-1].ID)
 
-	totalCount, _ := reader.CardsTotalCountByCategory(category)
-	hasNext, _ := reader.CardsHasNextAfter(lastID)
+	totalCount, err := reader.CardsTotalCountByCategory(category)
+	if err != nil {
+		return nil, err
+	}
+
+	hasNext, err := reader.CardsHasNextAfter(lastID)
+	if err != nil {
+		return nil, err
+	}
 
 	return &cardsConnectionResolver{
 		ctx:        ctx,

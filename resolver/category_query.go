@@ -7,8 +7,15 @@ import (
 func (r *Resolver) Category(ctx context.Context, args struct {
 	ID string
 }) (*categoryResolver, error) {
-	categoryReader, _ := getCategoryReader(ctx)
-	cardReader, _ := getCardReader(ctx)
+	categoryReader, err := getCategoryReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	cardReader, err := getCardReader(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return newCategoryResolverByID(ctx, categoryReader, cardReader, args.ID)
 }

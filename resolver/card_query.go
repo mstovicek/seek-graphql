@@ -7,7 +7,10 @@ import (
 func (r *Resolver) Card(ctx context.Context, args struct {
 	ID string
 }) (*cardResolver, error) {
-	cardLoader, _ := getCardReader(ctx)
+	cardLoader, err := getCardReader(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	return newCardResolverByID(ctx, cardLoader, args.ID)
 }

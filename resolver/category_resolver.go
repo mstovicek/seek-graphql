@@ -14,7 +14,10 @@ func newCategoryResolverByID(
 	cardReader cardReaderInterface,
 	ID string,
 ) (*categoryResolver, error) {
-	category, _ := categoryReader.LoadCategoryByID(ctx, ID)
+	category, err := categoryReader.LoadCategoryByID(ctx, ID)
+	if err != nil {
+		return nil, err
+	}
 
 	return newCategoryResolverWithModel(ctx, cardReader, category)
 }

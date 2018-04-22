@@ -11,7 +11,10 @@ func newCardResolverByID(
 	reader cardReaderInterface,
 	ID string,
 ) (*cardResolver, error) {
-	card, _ := reader.LoadCardById(ctx, ID)
+	card, err := reader.LoadCardById(ctx, ID)
+	if err != nil {
+		return nil, err
+	}
 
 	return &cardResolver{
 		ctx:  ctx,
@@ -24,7 +27,10 @@ func newCardResolverByInput(
 	writer cardWriterInterface,
 	title string,
 ) (*cardResolver, error) {
-	card, _ := writer.InsertCard(ctx, title)
+	card, err := writer.InsertCard(ctx, title)
+	if err != nil {
+		return nil, err
+	}
 
 	return &cardResolver{
 		ctx:  ctx,
