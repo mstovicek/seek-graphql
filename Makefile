@@ -21,9 +21,11 @@ vet:
 fmt:
 	go fmt ./...
 
+.PHONY: build
 build: clean deps
 	env GOOS=linux go build -ldflags="-s -w" -o bin/sls-api-gateway cmd/sls-api-gateway.go
 	env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/test cmd/test.go
 
+.PHONY: clean
 clean:
 	rm -f bin/*
