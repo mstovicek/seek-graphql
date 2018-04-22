@@ -1,17 +1,17 @@
 package main
 
 import (
-	"github.com/aws/aws-lambda-go/lambda"
 	"context"
-	"log"
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/mstovicek/seek-graphql/schema"
 	"encoding/json"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/caarlos0/env"
+	"github.com/mstovicek/seek-graphql/schema"
+	"log"
 )
 
 type config struct {
-	CorsAllowOrigin string `env:"CORS_ALLOW_ORIGIN" envDefault:"*"`
+	CorsAllowOrigin  string `env:"CORS_ALLOW_ORIGIN" envDefault:"*"`
 	CorsAllowMethods string `env:"CORS_ALLOW_METHODS" envDefault:"*"`
 }
 
@@ -35,9 +35,9 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 	}
 
 	return events.APIGatewayProxyResponse{
-		Body:       string(rJSON),
-		Headers: map[string]string {
-			"Access-Control-Allow-Origin": cfg.CorsAllowOrigin,
+		Body: string(rJSON),
+		Headers: map[string]string{
+			"Access-Control-Allow-Origin":  cfg.CorsAllowOrigin,
 			"Access-Control-Allow-Methods": cfg.CorsAllowMethods,
 		},
 		StatusCode: 200,

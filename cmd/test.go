@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/mstovicek/seek-graphql/schema"
-	"context"
 )
 
 func main() {
@@ -14,29 +14,29 @@ func main() {
 	//}
 	//`
 
-//	query := `
-//	{
-//		category(id: "milan") {
-//			id,
-//			title,
-//			cards (first: 3, after: "cursor:5") {
-//				totalCount,
-//				edges {
-//					cursor,
-//					node {
-//						id,
-//						title
-//					}
-//				}
-//				pageInfo{
-//					startCursor,
-//					endCursor,
-//					hasNextPage
-//				},
-//			}
-//		}
-//	}
-//`
+	//	query := `
+	//	{
+	//		category(id: "milan") {
+	//			id,
+	//			title,
+	//			cards (first: 3, after: "cursor:5") {
+	//				totalCount,
+	//				edges {
+	//					cursor,
+	//					node {
+	//						id,
+	//						title
+	//					}
+	//				}
+	//				pageInfo{
+	//					startCursor,
+	//					endCursor,
+	//					hasNextPage
+	//				},
+	//			}
+	//		}
+	//	}
+	//`
 
 	//	query := `
 	//{
