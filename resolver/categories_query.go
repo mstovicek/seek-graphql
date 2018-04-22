@@ -27,8 +27,13 @@ func (r *Resolver) Categories(ctx context.Context, args struct {
 
 	log.Printf("categories: %d, %s\n", first, after)
 
+	categoryReader, _ := getCategoryReader(ctx)
+	cardReader, _ := getCardReader(ctx)
+
 	return newCategoriesConnectionResolver(
 		ctx,
+		categoryReader,
+		cardReader,
 		first,
 		&after,
 	)

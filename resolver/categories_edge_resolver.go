@@ -1,15 +1,16 @@
 package resolver
 
 import (
+	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/model"
-	"context"
 )
 
 type categoriesEdgeResolver struct {
-	ctx context.Context
-	cursor graphql.ID
-	model  *model.Category
+	ctx        context.Context
+	cardReader cardReaderInterface
+	cursor     graphql.ID
+	model      *model.Category
 }
 
 func (r *categoriesEdgeResolver) Cursor() (graphql.ID, error) {
@@ -17,5 +18,5 @@ func (r *categoriesEdgeResolver) Cursor() (graphql.ID, error) {
 }
 
 func (r *categoriesEdgeResolver) Node() (*categoryResolver, error) {
-	return newCategoryResolverWithModel(r.ctx, r.model)
+	return newCategoryResolverWithModel(r.ctx, r.cardReader, r.model)
 }

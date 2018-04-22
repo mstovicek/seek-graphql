@@ -1,13 +1,13 @@
 package resolver
 
 import (
+	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/model"
-	"context"
 )
 
 type cardsEdgeResolver struct {
-	ctx context.Context
+	ctx    context.Context
 	cursor graphql.ID
 	model  *model.Card
 }

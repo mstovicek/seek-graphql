@@ -1,12 +1,41 @@
 package resolver
 
 import (
+	"context"
 	"github.com/mstovicek/seek-graphql/model"
 	"github.com/mstovicek/seek-graphql/service"
 	"log"
-	"context"
-	"github.com/mstovicek/seek-graphql/loader"
 )
+
+func newCardConnectionResolverByCategory(
+	ctx context.Context,
+	reader cardReaderInterface,
+	category *model.Category,
+	first int,
+	afterCursor *string,
+) (*cardsConnectionResolver, error) {
+	afterID, _ := service.DecodeCursor(afterCursor)
+
+	cards, err := reader.ListCardsByCategory(ctx, category, first, afterID)
+	if err != nil {
+		return nil, err
+	}
+
+	firstID := &(cards[0].ID)
+	lastID := &(cards[len(cards)-1].ID)
+
+	totalCount, _ := reader.CardsTotalCountByCategory(category)
+	hasNext, _ := reader.CardsHasNextAfter(lastID)
+
+	return &cardsConnectionResolver{
+		ctx:        ctx,
+		cards:      cards,
+		totalCount: totalCount,
+		from:       firstID,
+		to:         lastID,
+		hasNext:    hasNext,
+	}, nil
+}
 
 type cardsConnectionResolver struct {
 	ctx        context.Context
@@ -14,26 +43,7 @@ type cardsConnectionResolver struct {
 	totalCount *int
 	from       *string
 	to         *string
-}
-
-func newCardConnectionResolverByCategory(
-	ctx context.Context,
-	category *model.Category,
-	first int,
-	afterCursor *string,
-) (*cardsConnectionResolver, error) {
-	afterID, _ := service.DecodeCursor(afterCursor)
-
-	cards, _ := loader.ListCardsByCategory(ctx, category, first, afterID)
-	totalCount, _ := loader.CardsTotalCountByCategory(category)
-
-	return &cardsConnectionResolver{
-		ctx:        ctx,
-		cards:      cards,
-		totalCount: totalCount,
-		from:       &(cards[0].ID),
-		to:         &(cards[len(cards)-1].ID),
-	}, nil
+	hasNext    bool
 }
 
 func (r *cardsConnectionResolver) TotalCount() (int32, error) {
@@ -59,12 +69,10 @@ func (r *cardsConnectionResolver) Edges() (*[]*cardsEdgeResolver, error) {
 func (r *cardsConnectionResolver) PageInfo() (*pageInfoResolver, error) {
 	log.Printf("cardsConnectionResolver.PageInfo %v \n", r)
 
-	hasNext, _ := loader.CardsHasNextAfter(r.to)
-
 	return newPageInfoResolver(
 		r.ctx,
 		r.from,
 		r.to,
-		hasNext,
+		r.hasNext,
 	)
 }

@@ -7,5 +7,7 @@ import (
 func (r *Resolver) Card(ctx context.Context, args struct {
 	ID string
 }) (*cardResolver, error) {
-	return newCardResolverById(ctx, args.ID)
+	cardLoader, _ := getCardReader(ctx)
+
+	return newCardResolverById(ctx, cardLoader, args.ID)
 }

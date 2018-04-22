@@ -1,4 +1,4 @@
-package loader
+package loader_dummy
 
 import (
 	"context"
@@ -7,7 +7,17 @@ import (
 	"strconv"
 )
 
-func LoadCategoryById(ctx context.Context, ID string) (*model.Category, error) {
+func NewCategoryLoader(ctx context.Context) (*categoryLoader, error) {
+	return &categoryLoader{
+		ctx: ctx,
+	}, nil
+}
+
+type categoryLoader struct {
+	ctx context.Context
+}
+
+func (loader *categoryLoader) LoadCategoryById(ctx context.Context, ID string) (*model.Category, error) {
 	log.Printf("loader.LoadCategoryById (id: %s) !!\n", ID)
 
 	return &model.Category{
@@ -16,7 +26,7 @@ func LoadCategoryById(ctx context.Context, ID string) (*model.Category, error) {
 	}, nil
 }
 
-func ListCategories(ctx context.Context, first int, afterID *string) ([]*model.Category, error) {
+func (loader *categoryLoader) ListCategories(ctx context.Context, first int, afterID *string) ([]*model.Category, error) {
 	log.Printf("loader.ListCategories(first: %d, after: %s) !!\n", first, *afterID)
 
 	afterInt, _ := strconv.Atoi(*afterID)
@@ -33,11 +43,11 @@ func ListCategories(ctx context.Context, first int, afterID *string) ([]*model.C
 	return slice, nil
 }
 
-func CategoriesHasNextAfter(after *string) (bool, error) {
+func (loader *categoryLoader) CategoriesHasNextAfter(after *string) (bool, error) {
 	return true, nil
 }
 
-func CategoriesTotalCount() (*int, error) {
+func (loader *categoryLoader) CategoriesTotalCount() (*int, error) {
 	log.Printf("loader.CategoriesTotalCount!!\n")
 
 	totalCount := 999

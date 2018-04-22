@@ -1,41 +1,50 @@
 package resolver
 
 import (
+	"context"
 	"github.com/mstovicek/seek-graphql/model"
 	"github.com/mstovicek/seek-graphql/service"
-	"context"
-	"github.com/mstovicek/seek-graphql/loader"
 )
-
-type categoriesConnectionResolver struct {
-	ctx        context.Context
-	categories []*model.Category
-	totalCount *int
-	from       *string
-	to         *string
-}
 
 func newCategoriesConnectionResolver(
 	ctx context.Context,
+	categoryReader categoryReaderInterface,
+	cardReader cardReaderInterface,
 	first int,
 	afterCursor *string,
 ) (*categoriesConnectionResolver, error) {
 	afterID, _ := service.DecodeCursor(afterCursor)
 
-	categories, err := loader.ListCategories(ctx, first, afterID)
+	categories, err := categoryReader.ListCategories(ctx, first, afterID)
 	if err != nil {
 		return nil, err
 	}
 
-	totalCount, _ := loader.CategoriesTotalCount()
+	firstID := &(categories[0].ID)
+	lastID := &(categories[len(categories)-1].ID)
+
+	totalCount, _ := categoryReader.CategoriesTotalCount()
+	hasNext, _ := categoryReader.CategoriesHasNextAfter(lastID)
 
 	return &categoriesConnectionResolver{
 		ctx:        ctx,
+		cardReader: cardReader,
 		categories: categories,
 		totalCount: totalCount,
-		from:       &(categories[0].ID),
-		to:         &(categories[len(categories)-1].ID),
+		from:       firstID,
+		to:         lastID,
+		hasNext:    hasNext,
 	}, nil
+}
+
+type categoriesConnectionResolver struct {
+	ctx        context.Context
+	cardReader cardReaderInterface
+	categories []*model.Category
+	totalCount *int
+	from       *string
+	to         *string
+	hasNext    bool
 }
 
 func (r *categoriesConnectionResolver) TotalCount() (int32, error) {
@@ -46,21 +55,20 @@ func (r *categoriesConnectionResolver) Edges() (*[]*categoriesEdgeResolver, erro
 	l := make([]*categoriesEdgeResolver, len(r.categories))
 	for i := range l {
 		l[i] = &categoriesEdgeResolver{
-			ctx:    r.ctx,
-			cursor: service.EncodeCursor(&(r.categories[i].ID)),
-			model:  r.categories[i],
+			ctx:        r.ctx,
+			cardReader: r.cardReader,
+			cursor:     service.EncodeCursor(&(r.categories[i].ID)),
+			model:      r.categories[i],
 		}
 	}
 	return &l, nil
 }
 
 func (r *categoriesConnectionResolver) PageInfo() (*pageInfoResolver, error) {
-	hasNext, _ := loader.CategoriesHasNextAfter(r.to)
-
 	return newPageInfoResolver(
 		r.ctx,
 		r.from,
 		r.to,
-		hasNext,
+		r.hasNext,
 	)
 }

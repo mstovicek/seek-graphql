@@ -1,4 +1,4 @@
-package loader
+package loader_dummy
 
 import (
 	"context"
@@ -7,7 +7,17 @@ import (
 	"strconv"
 )
 
-func LoadCard(ctx context.Context, ID string) (*model.Card, error) {
+func NewCardLoader(ctx context.Context) (*cardLoader, error) {
+	return &cardLoader{
+		ctx: ctx,
+	}, nil
+}
+
+type cardLoader struct {
+	ctx context.Context
+}
+
+func (loader *cardLoader) LoadCard(ctx context.Context, ID string) (*model.Card, error) {
 	log.Printf("loader.LocadCard (id: %s) !!\n", ID)
 
 	return &model.Card{
@@ -16,7 +26,7 @@ func LoadCard(ctx context.Context, ID string) (*model.Card, error) {
 	}, nil
 }
 
-func ListCardsByCategory(ctx context.Context, category *model.Category, first int, afterID *string) ([]*model.Card, error) {
+func (loader *cardLoader) ListCardsByCategory(ctx context.Context, category *model.Category, first int, afterID *string) ([]*model.Card, error) {
 	log.Printf("loader.ListCardsByCategory(first: %d, after: %s) !!\n", first, *afterID)
 
 	afterInt, _ := strconv.Atoi(*afterID)
@@ -33,7 +43,7 @@ func ListCardsByCategory(ctx context.Context, category *model.Category, first in
 	return slice, nil
 }
 
-func CardsTotalCountByCategory(category *model.Category) (*int, error) {
+func (loader *cardLoader) CardsTotalCountByCategory(category *model.Category) (*int, error) {
 	log.Printf("loader.CardsTotalCountByCategory (category: %s)!!\n", category.Title)
 
 	totalCount := 999
@@ -41,13 +51,13 @@ func CardsTotalCountByCategory(category *model.Category) (*int, error) {
 	return &totalCount, nil
 }
 
-func CardsHasNextAfter(afterID *string) (bool, error) {
+func (loader *cardLoader) CardsHasNextAfter(afterID *string) (bool, error) {
 	return true, nil
 }
 
-func InsertCard(ctx context.Context, title string) (*model.Card, error) {
+func (loader *cardLoader) InsertCard(ctx context.Context, title string) (*model.Card, error) {
 	return &model.Card{
-		ID: "42",
+		ID:    "42",
 		Title: "newCard:" + title,
 	}, nil
 }

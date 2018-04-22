@@ -1,33 +1,40 @@
 package resolver
 
 import (
+	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/model"
 	"log"
 	"strconv"
-	"github.com/mstovicek/seek-graphql/loader"
-	"context"
 )
 
+func newCategoryResolverById(
+	ctx context.Context,
+	categoryReader categoryReaderInterface,
+	cardReader cardReaderInterface,
+	ID string,
+) (*categoryResolver, error) {
+	category, _ := categoryReader.LoadCategoryById(ctx, ID)
+
+	return newCategoryResolverWithModel(ctx, cardReader, category)
+}
+
+func newCategoryResolverWithModel(
+	ctx context.Context,
+	cardReader cardReaderInterface,
+	category *model.Category,
+) (*categoryResolver, error) {
+	return &categoryResolver{
+		ctx:        ctx,
+		cardReader: cardReader,
+		category:   category,
+	}, nil
+}
+
 type categoryResolver struct {
-	ctx      context.Context
-	category *model.Category
-}
-
-func newCategoryResolverById(ctx context.Context, ID string) (*categoryResolver, error) {
-	category, _ := loader.LoadCategoryById(ctx, ID)
-
-	return &categoryResolver{
-		ctx:      ctx,
-		category: category,
-	}, nil
-}
-
-func newCategoryResolverWithModel(ctx context.Context, category *model.Category) (*categoryResolver, error) {
-	return &categoryResolver{
-		ctx:      ctx,
-		category: category,
-	}, nil
+	ctx        context.Context
+	cardReader cardReaderInterface
+	category   *model.Category
 }
 
 func (r *categoryResolver) ID() (graphql.ID, error) {
@@ -60,37 +67,9 @@ func (r *categoryResolver) Cards(args struct {
 
 	return newCardConnectionResolverByCategory(
 		r.ctx,
+		r.cardReader,
 		r.category,
 		first,
 		&after,
 	)
 }
-
-//func (r *categoryResolver) Cards(args struct {
-//	First *int32
-//	After *string
-//}) *cardsConnectionResolver {
-//	first := 10
-//
-//	firstPointer := args.First
-//	if firstPointer != nil {
-//		first = int(*firstPointer)
-//		log.Println("first: " + strconv.Itoa(first))
-//	}
-//
-//	after := ""
-//
-//	afterPointer := args.After
-//	if afterPointer != nil {
-//		after = *afterPointer
-//		log.Println("after: " + after)
-//	}
-//
-//	cards, _ := loader.ListCardsByCategory(r.ctx, first, after)
-//
-//	return newCardConnectionResolverWithModels(
-//		r.ctx,
-//		r.category,
-//		cards,
-//	)
-//}

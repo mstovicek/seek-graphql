@@ -1,8 +1,8 @@
 package resolver
 
 import (
-	"github.com/graph-gophers/graphql-go"
 	"context"
+	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/service"
 )
 

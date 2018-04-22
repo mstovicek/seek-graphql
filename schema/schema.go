@@ -1,10 +1,10 @@
 package schema
 
 import (
-	"io/ioutil"
+	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/resolver"
-	"context"
+	"io/ioutil"
 )
 
 func Execute(ctx context.Context, query string) (*graphql.Response, error) {
