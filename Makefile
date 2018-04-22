@@ -17,6 +17,10 @@ lint:
 vet:
 	go vet ./...
 
+.PHONY: fmt
+fmt:
+	go fmt ./...
+
 build: clean deps
 	env GOOS=linux go build -ldflags="-s -w" -o bin/sls-api-gateway cmd/sls-api-gateway.go
 	env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o bin/test cmd/test.go
