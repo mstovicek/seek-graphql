@@ -4,24 +4,13 @@ import (
 	"context"
 	"github.com/graph-gophers/graphql-go"
 	"github.com/mstovicek/seek-graphql/resolver"
-	"io/ioutil"
 )
 
 func Execute(ctx context.Context, query string) (*graphql.Response, error) {
-	//sch, _ := getSchemaFromFile("./schema/schema.graphql")
 	sch := getSchema()
 	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
 
 	return s.Exec(ctx, query, "", make(map[string]interface{})), nil
-}
-
-func getSchemaFromFile(path string) (string, error) {
-	b, err := ioutil.ReadFile(path)
-	if err != nil {
-		return "", err
-	}
-
-	return string(b), nil
 }
 
 func getSchema() string {
