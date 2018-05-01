@@ -205,6 +205,59 @@ func TestCard(t *testing.T) {
 	assertEqualResponse(t, expectedResponse, *actualResponse)
 }
 
+func TestCategory(t *testing.T) {
+	query := `query {
+	category(id: "4") {
+		id,
+		title,
+		cards (first: 1) {
+			totalCount,
+			edges {
+				cursor,
+				node {
+					id
+				}
+			}
+			pageInfo{
+				startCursor,
+				endCursor,
+				hasNextPage
+			},
+		}
+	}
+}`
+
+	expectedResponse := `{
+	"data": {
+		"category": {
+			"id": "4",
+			"title": "category@4",
+			"cards": {
+				"totalCount": 999,
+				"edges": [
+					{
+						"cursor": "cursor:0",
+						"node": {
+							"id": "0"
+						}
+					}
+				],
+				"pageInfo": {
+					"startCursor": "cursor:0",
+					"endCursor": "cursor:0",
+					"hasNextPage": true
+				}
+			}
+		}
+	}
+}`
+
+	actualResponse, err := getResponse(query)
+
+	assert.Nil(t, err)
+	assertEqualResponse(t, expectedResponse, *actualResponse)
+}
+
 func getResponse(query string) (*string, error) {
 	response, err := schema.Execute(context.Background(), query)
 	if err != nil {
@@ -231,30 +284,6 @@ func assertEqualResponse(t assert.TestingT, expected string, actual string) bool
 }
 
 func aaa() {
-	//	query := `
-	//	{
-	//		category(id: "milan") {
-	//			id,
-	//			title,
-	//			cards (first: 3, after: "cursor:5") {
-	//				totalCount,
-	//				edges {
-	//					cursor,
-	//					node {
-	//						id,
-	//						title
-	//					}
-	//				}
-	//				pageInfo{
-	//					startCursor,
-	//					endCursor,
-	//					hasNextPage
-	//				},
-	//			}
-	//		}
-	//	}
-	//`
-
 	//	query := `
 	//{
 	//	categories (first: 2, after: "cursor:3"){
