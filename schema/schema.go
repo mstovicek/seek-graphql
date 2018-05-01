@@ -33,6 +33,9 @@ schema {
 
 type Query {
     me: Me
+    category(id: String!): Category
+    categories(first: Int,  after: String): CategoriesConnection!
+    card(id: String!): Card
 }
 
 type PageInfo {
