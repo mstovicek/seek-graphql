@@ -6,15 +6,7 @@ import (
 	"github.com/mstovicek/seek-graphql/resolver"
 )
 
-func Execute(ctx context.Context, query string) (*graphql.Response, error) {
-	sch := getSchema()
-	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
-
-	return s.Exec(ctx, query, "", make(map[string]interface{})), nil
-}
-
-func getSchema() string {
-	return `
+const schema = `
 schema {
     query: Query
 	mutation: Mutation
@@ -80,4 +72,10 @@ input CardInput {
 	title: String!
 }
 `
+
+func Execute(ctx context.Context, query string) (*graphql.Response, error) {
+	sch := schema
+	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
+
+	return s.Exec(ctx, query, "", make(map[string]interface{})), nil
 }
