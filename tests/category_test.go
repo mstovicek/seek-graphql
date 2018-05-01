@@ -7,45 +7,49 @@ import (
 
 func TestCategory(t *testing.T) {
 	query := `query {
-	category(id: "4") {
-		id,
-		title,
-		cards (first: 1) {
-			totalCount,
-			edges {
-				cursor,
-				node {
-					id
+	me {
+		category(id: "4") {
+			id,
+			title,
+			cards (first: 1) {
+				totalCount,
+				edges {
+					cursor,
+					node {
+						id
+					}
 				}
+				pageInfo{
+					startCursor,
+					endCursor,
+					hasNextPage
+				},
 			}
-			pageInfo{
-				startCursor,
-				endCursor,
-				hasNextPage
-			},
 		}
 	}
 }`
 
 	expectedResponse := `{
 	"data": {
-		"category": {
-			"id": "4",
-			"title": "category@4",
-			"cards": {
-				"totalCount": 999,
-				"edges": [
-					{
-						"cursor": "cursor:0",
-						"node": {
-							"id": "0"
+		"me": {
+			"category": {
+				"id": "4",
+				"title": "category@4",
+				"cards": {
+					"totalCount": 999,
+					"edges": [
+						{
+							"cursor": "cursor:0",
+							"node": {
+								"id": "0"
+							}
 						}
+					],
+					"pageInfo": {
+						"startCursor": "cursor:0",
+						"endCursor": "cursor:0",
+						"hasNextPage": true
 					}
-				],
-				"pageInfo": {
-					"startCursor": "cursor:0",
-					"endCursor": "cursor:0",
-					"hasNextPage": true
 				}
 			}
 		}

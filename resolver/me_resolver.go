@@ -69,3 +69,19 @@ func (r *meResolver) Categories(ctx context.Context, args struct {
 		&after,
 	)
 }
+
+func (r *meResolver) Category(ctx context.Context, args struct {
+	ID string
+}) (*categoryResolver, error) {
+	categoryReader, err := getCategoryReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	cardReader, err := getCardReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return newCategoryResolverByID(ctx, categoryReader, cardReader, args.ID)
+}
