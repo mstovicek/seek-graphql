@@ -10,5 +10,15 @@ func (r *Resolver) Me(ctx context.Context) (*meResolver, error) {
 		return nil, err
 	}
 
-	return newMeResolverByCtx(ctx, meReader)
+	categoryReader, err := getCategoryReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	cardReader, err := getCardReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return newMeResolverByCtx(ctx, meReader, categoryReader, cardReader)
 }

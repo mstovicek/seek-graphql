@@ -8,6 +8,7 @@ import (
 	"github.com/mstovicek/seek-graphql/schema"
 	"testing"
 	"log"
+	"strings"
 )
 
 func TestMe(t *testing.T) {
@@ -32,7 +33,62 @@ func TestMe(t *testing.T) {
 	actualResponse, err := getResponse(query)
 
 	assert.Nil(t, err)
-	assert.Equal(t, expectedResponse, *actualResponse)
+	assertEqualResponse(t, expectedResponse, *actualResponse)
+}
+
+func TestMeWithCategory(t *testing.T) {
+	query := `query {
+	me {
+		id,
+		email,
+		name,
+		categories (first: 1) {
+			totalCount,
+			edges{
+				cursor,
+				node {
+					id
+				}
+			},
+			pageInfo{
+				startCursor,
+				endCursor,
+				hasNextPage
+			}
+		}
+	}
+}`
+
+	expectedResponse := `{
+	"data": {
+		"me": {
+			"id": "42",
+			"email": "milan@me",
+			"name": "Milan",
+			"categories": {
+				"totalCount": 999,
+				"edges": [
+					{
+						"cursor": "cursor:0",
+						"node": {
+							"id": "0"
+						}
+					}
+				],
+				"pageInfo": {
+					"startCursor": "cursor:0",
+					"endCursor": "cursor:0",
+					"hasNextPage": true
+				}
+			}
+		}
+	}
+}`
+
+	actualResponse, err := getResponse(query)
+
+	assert.Nil(t, err)
+	assertEqualResponse(t, expectedResponse, *actualResponse)
 }
 
 func getResponse(query string) (*string, error) {
@@ -52,6 +108,13 @@ func getResponse(query string) (*string, error) {
 	log.Printf("query: %s \n response: %s \n\n", query, r)
 
 	return &r, nil
+}
+
+func assertEqualResponse(t assert.TestingT, expected string, actual string) bool {
+	a := strings.Split(expected, "\n")
+	b := strings.Split(actual, "\n")
+
+	return assert.Equal(t, a, b)
 }
 
 func aaa() {

@@ -8,9 +8,11 @@ import (
 
 func newMeResolverByCtx(
 	ctx context.Context,
-	reader meReaderInterface,
+	meReader meReaderInterface,
+	categoryReader categoryReaderInterface,
+	cardReader cardReaderInterface,
 ) (*meResolver, error) {
-	me, err := reader.LoadMeByCtx(ctx)
+	me, err := meReader.LoadMeByCtx(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -18,12 +20,16 @@ func newMeResolverByCtx(
 	return &meResolver{
 		ctx: ctx,
 		me:  me,
+		categoryReader: categoryReader,
+		cardReader: cardReader,
 	}, nil
 }
 
 type meResolver struct {
 	ctx context.Context
 	me  *model.Me
+	categoryReader categoryReaderInterface
+	cardReader cardReaderInterface
 }
 
 func (r *meResolver) ID() (graphql.ID, error) {
@@ -36,4 +42,30 @@ func (r *meResolver) Name() (*string, error) {
 
 func (r *meResolver) Email() (string, error) {
 	return r.me.Email, nil
+}
+
+func (r *meResolver) Categories(ctx context.Context, args struct {
+	First *int32
+	After *string
+}) (*categoriesConnectionResolver, error) {
+	first := 0
+	after := ""
+
+	firstPointer := args.First
+	if firstPointer != nil {
+		first = int(*firstPointer)
+	}
+
+	afterPointer := args.After
+	if afterPointer != nil {
+		after = *afterPointer
+	}
+
+	return newCategoriesConnectionResolver(
+		ctx,
+		r.categoryReader,
+		r.cardReader,
+		first,
+		&after,
+	)
 }

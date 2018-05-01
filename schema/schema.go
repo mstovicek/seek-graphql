@@ -48,7 +48,7 @@ type Me {
     id: ID!
     email: String!
     name: String
-#    categories(first: Int,  after: String): CategoriesConnection!
+    categories(first: Int,  after: String): CategoriesConnection!
 }
 
 type Category {
