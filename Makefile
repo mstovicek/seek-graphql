@@ -6,6 +6,7 @@ endif
 
 .PHONY: deps
 deps: dep
+	rm -r vendor
 	dep ensure -v
 
 .PHONE: lint
@@ -29,3 +30,7 @@ build: clean deps
 .PHONY: clean
 clean:
 	rm -f bin/*
+
+.PHONE: test
+test:
+	go test ./...
