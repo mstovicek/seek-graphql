@@ -11,7 +11,7 @@ func getCardReader(ctx context.Context) (cardReaderInterface, error) {
 }
 
 type cardReaderInterface interface {
-	LoadCardById(ctx context.Context, ID string) (*model.Card, error)
+	LoadCardByID(ctx context.Context, ID string) (*model.Card, error)
 	ListCardsByCategory(ctx context.Context, category *model.Category, first int, afterID *string) ([]*model.Card, error)
 	CardsTotalCountByCategory(category *model.Category) (*int, error)
 	CardsHasNextAfter(afterID *string) (bool, error)

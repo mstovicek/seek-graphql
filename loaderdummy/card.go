@@ -17,7 +17,7 @@ type cardLoader struct {
 	ctx context.Context
 }
 
-func (loader *cardLoader) LoadCardById(ctx context.Context, ID string) (*model.Card, error) {
+func (loader *cardLoader) LoadCardByID(ctx context.Context, ID string) (*model.Card, error) {
 	log.Printf("loader.LocadCard (id: %s) !!\n", ID)
 
 	return &model.Card{

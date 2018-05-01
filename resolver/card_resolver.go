@@ -11,7 +11,7 @@ func newCardResolverByID(
 	reader cardReaderInterface,
 	ID string,
 ) (*cardResolver, error) {
-	card, err := reader.LoadCardById(ctx, ID)
+	card, err := reader.LoadCardByID(ctx, ID)
 	if err != nil {
 		return nil, err
 	}
