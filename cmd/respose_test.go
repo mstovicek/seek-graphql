@@ -182,6 +182,29 @@ func TestMeWithCategoryAndCard(t *testing.T) {
 	assertEqualResponse(t, expectedResponse, *actualResponse)
 }
 
+func TestCard(t *testing.T) {
+	query := `query {
+	card(id: "3") {
+		id,
+		title
+	}
+}`
+
+	expectedResponse := `{
+	"data": {
+		"card": {
+			"id": "3",
+			"title": "card@3"
+		}
+	}
+}`
+
+	actualResponse, err := getResponse(query)
+
+	assert.Nil(t, err)
+	assertEqualResponse(t, expectedResponse, *actualResponse)
+}
+
 func getResponse(query string) (*string, error) {
 	response, err := schema.Execute(context.Background(), query)
 	if err != nil {
@@ -208,12 +231,6 @@ func assertEqualResponse(t assert.TestingT, expected string, actual string) bool
 }
 
 func aaa() {
-	//	query := `
-	//{
-	//	card(id: "milan") {id,title}
-	//}
-	//`
-
 	//	query := `
 	//	{
 	//		category(id: "milan") {
