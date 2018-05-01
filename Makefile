@@ -34,3 +34,8 @@ clean:
 .PHONE: test
 test:
 	go test ./...
+
+.PHONY: pre-commit-hook
+pre-commit-hook:
+	cp tools/pre-commit-hook .git/hooks/pre-commit
+	chmod +x .git/hooks/pre-commit
