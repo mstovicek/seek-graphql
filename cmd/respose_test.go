@@ -205,6 +205,29 @@ func TestCard(t *testing.T) {
 	assertEqualResponse(t, expectedResponse, *actualResponse)
 }
 
+func TestAddCard(t *testing.T) {
+	query := `mutation {
+	addCard(input: {title: "NewTitle"}) {
+		id,
+		title
+	}
+}`
+
+	expectedResponse := `{
+	"data": {
+		"addCard": {
+			"id": "42",
+			"title": "newCard:NewTitle"
+		}
+	}
+}`
+
+	actualResponse, err := getResponse(query)
+
+	assert.Nil(t, err)
+	assertEqualResponse(t, expectedResponse, *actualResponse)
+}
+
 func TestCategory(t *testing.T) {
 	query := `query {
 	category(id: "4") {
@@ -305,14 +328,5 @@ func aaa() {
 	//		}
 	//	}
 	//}
-	//`
-
-	//	query := `
-	//	mutation {
-	//		addCard(input: {title: "NewCard"}) {
-	//			id,
-	//			title
-	//		}
-	//	}
 	//`
 }
