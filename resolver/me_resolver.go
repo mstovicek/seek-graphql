@@ -85,3 +85,14 @@ func (r *meResolver) Category(ctx context.Context, args struct {
 
 	return newCategoryResolverByID(ctx, categoryReader, cardReader, args.ID)
 }
+
+func (r *meResolver) Card(ctx context.Context, args struct {
+	ID string
+}) (*cardResolver, error) {
+	cardLoader, err := getCardReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return newCardResolverByID(ctx, cardLoader, args.ID)
+}

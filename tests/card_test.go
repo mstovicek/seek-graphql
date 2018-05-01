@@ -7,17 +7,21 @@ import (
 
 func TestCard(t *testing.T) {
 	query := `query {
-	card(id: "3") {
-		id,
-		title
+	me {
+		card(id: "3") {
+			id,
+			title
+		}
 	}
 }`
 
 	expectedResponse := `{
 	"data": {
-		"card": {
-			"id": "3",
-			"title": "card@3"
+		"me": {
+			"card": {
+				"id": "3",
+				"title": "card@3"
+			}
 		}
 	}
 }`

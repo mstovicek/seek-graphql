@@ -14,7 +14,6 @@ schema {
 
 type Query {
 	me: Me
-	card(id: String!): Card
 }
 
 type PageInfo {
@@ -29,6 +28,7 @@ type Me {
 	name: String
 	categories(first: Int,  after: String): CategoriesConnection!
 	category(id: String!): Category
+	card(id: String!): Card
 }
 
 type Category {
