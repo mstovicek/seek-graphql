@@ -73,26 +73,11 @@ func (r *meResolver) Categories(ctx context.Context, args struct {
 func (r *meResolver) Category(ctx context.Context, args struct {
 	ID string
 }) (*categoryResolver, error) {
-	categoryReader, err := getCategoryReader(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	cardReader, err := getCardReader(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return newCategoryResolverByID(ctx, categoryReader, cardReader, args.ID)
+	return newCategoryResolverByID(ctx, r.categoryReader, r.cardReader, args.ID)
 }
 
 func (r *meResolver) Card(ctx context.Context, args struct {
 	ID string
 }) (*cardResolver, error) {
-	cardLoader, err := getCardReader(ctx)
-	if err != nil {
-		return nil, err
-	}
-
-	return newCardResolverByID(ctx, cardLoader, args.ID)
+	return newCardResolverByID(ctx, r.cardReader, args.ID)
 }
