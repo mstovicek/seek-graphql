@@ -3,7 +3,6 @@ package resolver
 import (
 	"context"
 	"github.com/mstovicek/seek-graphql/model"
-	"github.com/mstovicek/seek-graphql/service"
 	"log"
 )
 
@@ -14,7 +13,7 @@ func newCardConnectionResolverByCategory(
 	first int,
 	afterCursor *string,
 ) (*cardsConnectionResolver, error) {
-	afterID, err := service.DecodeCursor(afterCursor)
+	afterID, err := decodeCursor(afterCursor)
 	if err != nil {
 		return nil, err
 	}
@@ -69,7 +68,7 @@ func (r *cardsConnectionResolver) Edges() (*[]*cardsEdgeResolver, error) {
 	for i := range l {
 		l[i] = &cardsEdgeResolver{
 			ctx:    r.ctx,
-			cursor: service.EncodeCursor(&(r.cards[i].ID)),
+			cursor: encodeCursor(&(r.cards[i].ID)),
 			model:  r.cards[i],
 		}
 	}

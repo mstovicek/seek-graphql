@@ -3,7 +3,6 @@ package resolver
 import (
 	"context"
 	"github.com/graph-gophers/graphql-go"
-	"github.com/mstovicek/seek-graphql/service"
 )
 
 type pageInfoResolver struct {
@@ -21,8 +20,8 @@ func newPageInfoResolver(
 ) (*pageInfoResolver, error) {
 	return &pageInfoResolver{
 		ctx:         ctx,
-		startCursor: service.EncodeCursor(startID),
-		endCursor:   service.EncodeCursor(endID),
+		startCursor: encodeCursor(startID),
+		endCursor:   encodeCursor(endID),
 		hasNextPage: hasNextPage,
 	}, nil
 }

@@ -1,4 +1,4 @@
-package service
+package resolver
 
 import (
 	"fmt"
@@ -6,12 +6,12 @@ import (
 	"strings"
 )
 
-func EncodeCursor(i *string) graphql.ID {
+func encodeCursor(i *string) graphql.ID {
 	return graphql.ID(fmt.Sprintf("cursor:%s", *i))
 	//return graphql.ID(base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("cursor%s", *i))))
 }
 
-func DecodeCursor(after *string) (*string, error) {
+func decodeCursor(after *string) (*string, error) {
 	i := strings.TrimPrefix(*after, "cursor:")
 	return &i, nil
 
