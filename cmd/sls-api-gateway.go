@@ -24,7 +24,7 @@ func Handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 		}, err
 	}
 
-	log.Printf("request: %v, body: %s, context: %v", request, request.Body)
+	log.Printf("request: %v, body: %s, context: %v", request, request.Body, ctx)
 	response, _ := schema.Execute(ctx, request.Body)
 
 	rJSON, err := json.Marshal(response)

@@ -20,6 +20,13 @@ func TestMe(t *testing.T) {
 }`
 
 	expectedResponse := `{
+	"data": {
+		"me": {
+			"id": "42",
+			"email": "milan@me",
+			"name": "Milan"
+		}
+	}
 }`
 
 	actualResponse, err := getResponse(query)
@@ -40,7 +47,7 @@ func getResponse(query string) (*string, error) {
 	}
 
 
-	r := fmt.Sprintf("%s \n", rJSON)
+	r := fmt.Sprintf("%s", rJSON)
 
 	log.Printf("query: %s \n response: %s \n\n", query, r)
 
