@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/stretchr/testify/assert"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/mstovicek/seek-graphql/schema"
-	"testing"
+	"github.com/stretchr/testify/assert"
 	"log"
 	"strings"
+	"testing"
 )
 
 func TestMe(t *testing.T) {
@@ -192,7 +192,6 @@ func getResponse(query string) (*string, error) {
 	if err != nil {
 		return nil, err
 	}
-
 
 	r := fmt.Sprintf("%s", rJSON)
 

@@ -18,18 +18,18 @@ func newMeResolverByCtx(
 	}
 
 	return &meResolver{
-		ctx: ctx,
-		me:  me,
+		ctx:            ctx,
+		me:             me,
 		categoryReader: categoryReader,
-		cardReader: cardReader,
+		cardReader:     cardReader,
 	}, nil
 }
 
 type meResolver struct {
-	ctx context.Context
-	me  *model.Me
+	ctx            context.Context
+	me             *model.Me
 	categoryReader categoryReaderInterface
-	cardReader cardReaderInterface
+	cardReader     cardReaderInterface
 }
 
 func (r *meResolver) ID() (graphql.ID, error) {
