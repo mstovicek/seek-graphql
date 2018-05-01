@@ -8,60 +8,60 @@ import (
 
 const schema = `
 schema {
-    query: Query
+	query: Query
 	mutation: Mutation
 }
 
 type Query {
-    me: Me
-    category(id: String!): Category
-    card(id: String!): Card
+	me: Me
+	category(id: String!): Category
+	card(id: String!): Card
 }
 
 type PageInfo {
-    startCursor: ID
-    endCursor: ID
-    hasNextPage: Boolean!
+	startCursor: ID
+	endCursor: ID
+	hasNextPage: Boolean!
 }
 
 type Me {
-    id: ID!
-    email: String!
-    name: String
-    categories(first: Int,  after: String): CategoriesConnection!
+	id: ID!
+	email: String!
+	name: String
+	categories(first: Int,  after: String): CategoriesConnection!
 }
 
 type Category {
-    id: ID!
-    title: String
-    cards(first: Int, after: String): CardsConnection
+	id: ID!
+	title: String
+	cards(first: Int, after: String): CardsConnection
 }
 
 type CategoriesEdge {
-    cursor: ID!
-    node: Category
+	cursor: ID!
+	node: Category
 }
 
 type CategoriesConnection {
-    totalCount: Int!
-    edges: [CategoriesEdge]
-    pageInfo: PageInfo!
+	totalCount: Int!
+	edges: [CategoriesEdge]
+	pageInfo: PageInfo!
 }
 
 type Card {
-    id: ID!
-    title: String
+	id: ID!
+	title: String
 }
 
 type CardsEdge {
-    cursor: ID!
-    node: Card
+	cursor: ID!
+	node: Card
 }
 
 type CardsConnection {
-    totalCount: Int!
-    edges: [CardsEdge]
-    pageInfo: PageInfo!
+	totalCount: Int!
+	edges: [CardsEdge]
+	pageInfo: PageInfo!
 }
 
 type Mutation {
