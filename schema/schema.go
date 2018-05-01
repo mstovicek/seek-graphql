@@ -32,6 +32,7 @@ schema {
 }
 
 type Query {
+    me: Me
     category(id: String!): Category
     categories(first: Int,  after: String): CategoriesConnection!
     card(id: String!): Card
@@ -41,6 +42,13 @@ type PageInfo {
     startCursor: ID
     endCursor: ID
     hasNextPage: Boolean!
+}
+
+type Me {
+    id: ID!
+    email: String!
+    name: String
+#    categories(first: Int,  after: String): CategoriesConnection!
 }
 
 type Category {

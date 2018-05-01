@@ -35,3 +35,11 @@ type categoryReaderInterface interface {
 	CategoriesHasNextAfter(after *string) (bool, error)
 	CategoriesTotalCount() (*int, error)
 }
+
+func getMeReader(ctx context.Context) (meReaderInterface, error) {
+	return loaderdummy.NewMeLoader(ctx)
+}
+
+type meReaderInterface interface {
+	LoadMeByCtx(ctx context.Context) (*model.Me, error)
+}

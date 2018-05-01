@@ -61,11 +61,21 @@ func main() {
 	//}
 	//`
 
+	//	query := `
+	//	mutation {
+	//		addCard(input: {title: "NewCard"}) {
+	//			id,
+	//			title
+	//		}
+	//	}
+	//`
+
 	query := `
-	mutation {
-		addCard(input: {title: "NewCard"}) {
+	query {
+		me {
 			id,
-			title
+			email,
+			name
 		}
 	}
 `
