@@ -11,7 +11,12 @@ import (
 )
 
 func getResponse(query string) (*string, error) {
-	response, err := schema.Execute(context.Background(), query)
+	executor, err := schema.NewSchemaExecutor()
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := executor.Execute(context.Background(), query)
 	if err != nil {
 		return nil, err
 	}

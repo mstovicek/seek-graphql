@@ -1,11 +1,5 @@
 package schema
 
-import (
-	"context"
-	"github.com/graph-gophers/graphql-go"
-	"github.com/mstovicek/seek-graphql/resolver"
-)
-
 const schema = `
 schema {
 	query: Query
@@ -72,10 +66,3 @@ input CardInput {
 	title: String!
 }
 `
-
-func Execute(ctx context.Context, query string) (*graphql.Response, error) {
-	sch := schema
-	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
-
-	return s.Exec(ctx, query, "", make(map[string]interface{})), nil
-}
