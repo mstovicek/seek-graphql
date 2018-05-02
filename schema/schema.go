@@ -17,9 +17,13 @@ type PageInfo {
 }
 
 type Me {
+	# current user ID
 	id: ID!
+	# email of logged in user
 	email: String!
+	# name of logged in user
 	name: String
+	# categories available to currently logged in user
 	categories(first: Int,  after: String): CategoriesConnection!
 	category(id: String!): Category
 	card(id: String!): Card
