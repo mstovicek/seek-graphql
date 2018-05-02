@@ -2,16 +2,12 @@ service: seek-graphql
 
 provider:
   name: aws
-  runtime: go1.x
   stage: dev
   profile: serverless-admin
   region: eu-central-1
 
 package:
- exclude:
-   - ./**
- include:
-   - ./bin/sls-api-gateway
+  individually: true
 
 custom:
   vars:
@@ -20,6 +16,12 @@ custom:
 
 functions:
   seek-graphql:
+    runtime: go1.x
+    package:
+      exclude:
+        - ./**
+      include:
+        - ./bin/sls-api-gateway
     handler: bin/sls-api-gateway
     environment:
       CORS_ALLOW_ORIGIN: ${self:custom.vars.corsAllowOrigin}
@@ -30,3 +32,10 @@ functions:
           method: post
           cors:
             origin: ${self:custom.vars.corsAllowOrigin}
+#          authorizer: authorizer-func-auth0
+  authorizer-func-auth0:
+    runtime: nodejs6.10
+    package:
+      include:
+        - ./auth0-authorizer/*
+    handler: auth0-authorizer/auth.authorize
