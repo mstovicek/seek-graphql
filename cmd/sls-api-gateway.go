@@ -5,19 +5,27 @@ import (
 	"encoding/json"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/caarlos0/env"
+	"github.com/mstovicek/seek-graphql/api"
 	"github.com/mstovicek/seek-graphql/schema"
 	"log"
-	"strings"
 )
 
-type config struct {
-	CorsAllowOrigin  string `env:"CORS_ALLOW_ORIGIN" envDefault:"*"`
-	CorsAllowMethods string `env:"CORS_ALLOW_METHODS" envDefault:"*"`
+type corsConfigInterface interface {
+	GetAllowOrigin() string
+	GetAllowMethods() string
+}
+
+type decoderInterface interface {
+	DecodeParams(body string) (query string, operationName string, variables map[string]interface{})
 }
 
 type executorInterface interface {
-	Execute(ctx context.Context, query string) (interface{}, error)
+	Execute(ctx context.Context, query string, operationName string, variables map[string]interface{}) (interface{}, error)
+}
+
+type loggerInterface interface {
+	Info(ctx context.Context, message string, fields map[string]interface{})
+	Error(ctx context.Context, message string, fields map[string]interface{})
 }
 
 func main() {
@@ -25,25 +33,54 @@ func main() {
 }
 
 func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	cfg := config{}
-	err := env.Parse(&cfg)
+	logger, err := getLogger()
 	if err != nil {
+		log.Printf("ERROR: cannot get logger, error: %s", err.Error())
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
 		}, err
 	}
 
-	logContextRequest(ctx, request)
+	corsConfig, err := getCorsConfig()
+	if err != nil {
+		log.Printf("cannot get CORS config, error: %s", err.Error())
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+		}, err
+	}
+
+	logger.Info(ctx, "request received", map[string]interface{}{
+		"context": ctx,
+		"request": request,
+		"body":    request.Body,
+	})
 
 	executor, err := getSchemaExecutor()
 	if err != nil {
+		logger.Error(ctx, "cannot get schema executor", map[string]interface{}{
+			"error": err,
+		})
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
 		}, err
 	}
 
-	response, err := executor.Execute(ctx, request.Body)
+	decoder, err := getApiDecoder()
 	if err != nil {
+		logger.Error(ctx, "cannot get API decoder", map[string]interface{}{
+			"error": err,
+		})
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+		}, err
+	}
+
+	query, operationName, variables := decoder.DecodeParams(request.Body)
+	response, err := executor.Execute(ctx, query, operationName, variables)
+	if err != nil {
+		logger.Error(ctx, "cannot execute query", map[string]interface{}{
+			"error": err,
+		})
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
 		}, err
@@ -51,16 +88,24 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (events
 
 	rJSON, err := json.Marshal(response)
 	if err != nil {
+		logger.Error(ctx, "cannot marshal response", map[string]interface{}{
+			"error": err,
+		})
 		return events.APIGatewayProxyResponse{
 			StatusCode: 500,
 		}, err
 	}
 
+	logger.Info(ctx, "query executed", map[string]interface{}{
+		"response": string(rJSON),
+	})
+
 	return events.APIGatewayProxyResponse{
 		Body: string(rJSON),
 		Headers: map[string]string{
-			"Access-Control-Allow-Origin":  cfg.CorsAllowOrigin,
-			"Access-Control-Allow-Methods": cfg.CorsAllowMethods,
+			"Access-Control-Allow-Origin":  corsConfig.GetAllowOrigin(),
+			"Access-Control-Allow-Methods": corsConfig.GetAllowMethods(),
+			"Content-type":                 "application/json",
 		},
 		StatusCode: 200,
 	}, nil
@@ -70,10 +115,14 @@ func getSchemaExecutor() (executorInterface, error) {
 	return schema.NewSchemaExecutor()
 }
 
-func logContextRequest(ctx context.Context, request events.APIGatewayProxyRequest) {
-	request.Body = strings.Replace(request.Body, "\n", "", -1)
+func getApiDecoder() (decoderInterface, error) {
+	return api.NewParamsDecoder()
+}
 
-	log.Printf("context: %v", ctx)
-	log.Printf("request: %v", request)
-	log.Printf("query: %s", request.Body)
+func getLogger() (loggerInterface, error) {
+	return api.NewLoggerStdout()
+}
+
+func getCorsConfig() (corsConfigInterface, error) {
+	return api.NewCorsConfig()
 }

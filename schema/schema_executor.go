@@ -8,7 +8,10 @@ import (
 
 func NewSchemaExecutor() (*schemaExecutor, error) {
 	sch := schema
-	s := graphql.MustParseSchema(sch, &resolver.Resolver{})
+	s, err := graphql.ParseSchema(sch, &resolver.Resolver{})
+	if err != nil {
+		return nil, err
+	}
 
 	return &schemaExecutor{
 		schema: s,
@@ -19,6 +22,11 @@ type schemaExecutor struct {
 	schema *graphql.Schema
 }
 
-func (s *schemaExecutor) Execute(ctx context.Context, query string) (interface{}, error) {
-	return s.schema.Exec(ctx, query, "", make(map[string]interface{})), nil
+func (s *schemaExecutor) Execute(
+	ctx context.Context,
+	query string,
+	operationName string,
+	variables map[string]interface{},
+) (interface{}, error) {
+	return s.schema.Exec(ctx, query, operationName, variables), nil
 }

@@ -16,7 +16,7 @@ func getResponse(query string) (*string, error) {
 		return nil, err
 	}
 
-	response, err := executor.Execute(context.Background(), query)
+	response, err := executor.Execute(context.Background(), query, "", nil)
 	if err != nil {
 		return nil, err
 	}
